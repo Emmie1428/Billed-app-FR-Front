@@ -20,6 +20,7 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
+  console.log("billsui",data)
   return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
