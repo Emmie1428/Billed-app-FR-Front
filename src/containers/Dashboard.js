@@ -81,7 +81,7 @@ export default class {
   handleClickIconEye = () => {
     const billUrl = $('#icon-eye-d').attr("data-bill-url")
     const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.8)
-    $('#modaleFileAdmin1').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`)
+    $('#modaleFileAdmin1').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" onerror="this.onerror=null; this.src=''; this.alt='Format de fichier invalide'; this.style.border='2px solid red'; this.style.padding='15px';"/></div>`)
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
@@ -110,7 +110,7 @@ export default class {
     $('#btn-refuse-bill').on('click', (e) => this.handleRefuseSubmit(e, bill))
   }
 
-  handleAcceptSubmit = (e, bill) => {
+  handleAcceptSubmit = (bill) => {
     const newBill = {
       ...bill,
       status: 'accepted',
@@ -120,7 +120,7 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
 
-  handleRefuseSubmit = (e, bill) => {
+  handleRefuseSubmit = (bill) => {
     const newBill = {
       ...bill,
       status: 'refused',

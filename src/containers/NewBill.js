@@ -20,8 +20,10 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"] `).files[0]
     
     const allowedExentions = ["jpg", "jpeg", "png"]
-     if (!allowedExentions.includes(file.name)) {
+    const extension = file.name.split('.').pop().toLowerCase()
+     if (!allowedExentions.includes(extension)) {
       alert("Format invalide, veuillez sélectionner un fichier .jpg, .jpeg ou .png")
+      e.target.value = ""
       return
      }
     
@@ -34,7 +36,7 @@ export default class NewBill {
 
     this.store
       .bills()
-      .create({
+      .upLoadFile({
         data: formData,
         headers: {
           noContentType: true
@@ -42,9 +44,9 @@ export default class NewBill {
       })
       .then(({fileUrl, key}) => {
         console.log(fileUrl)
-        this.billId = key
-        this.fileUrl = fileUrl
-        this.fileName = fileName
+        this.newBillId = key
+        this.newFileUrl = fileUrl
+        this.newFileName = fileName
       }).catch(error => console.error(error))
   }
   handleSubmit = e => {
@@ -60,10 +62,11 @@ export default class NewBill {
       vat: e.target.querySelector(`input[data-testid="vat"]`).value,
       pct: parseInt(e.target.querySelector(`input[data-testid="pct"]`).value) || 20,
       commentary: e.target.querySelector(`textarea[data-testid="commentary"]`).value,
-      fileUrl: this.fileUrl,
-      fileName: this.fileName,
+      fileUrl: this.newFileUrl,
+      fileName: this.newFileName,
       status: 'pending'
     }
+
     this.updateBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
   }
