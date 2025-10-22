@@ -50,7 +50,6 @@ describe("Given I am connected as an employee", () => {
       const store = null
       const billsContainer = new Bills({document, onNavigate, store, localStorage: window.localStorage
     })
-    
     const btnNewBill = screen.getByTestId('btn-new-bill')
     userEvent.click(btnNewBill)
 
