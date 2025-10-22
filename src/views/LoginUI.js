@@ -21,6 +21,7 @@ export default () => {
                   <label for="inputEmail">Votre email</label>
                   <input id="inputEmail" type="email" data-testid="employee-email-input" class="form-control" placeholder="johndoe@email.com" required autofocus>
                   <label for="inputPassword">Mot de passe</label>
+                  <p class="msgErrorEmployee" data-testid="msg-error-employee"></p>
                   <input id="inputPassword" type="password" data-testid="employee-password-input" class="form-control" placeholder="******" required>
                   <button class="btn btn-lg btn-primary btn-block" data-testid="employee-login-button" style="background-color: #0E5AE5;" type="submit">Se connecter</button>
                 </form>
@@ -35,6 +36,7 @@ export default () => {
                   <label for="adminInputEmail">Votre email</label>
                   <input id="adminInputEmail" type="email" data-testid="admin-email-input" class="form-control" placeholder="johndoe@email.com" required autofocus>
                   <label for="adminInputPassword">Mot de passe</label>
+                  <p class="msgErrorAdmin" data-testid="msg-error-admin"></p>
                   <input id="adminInputPassword" type="password" data-testid="admin-password-input" class="form-control" placeholder="******" required>
                   <button  type="submit" class="btn btn-lg btn-primary btn-block" data-testid="admin-login-button" style="background-color: #0E5AE5;">Se connecter</button>
                 </form>

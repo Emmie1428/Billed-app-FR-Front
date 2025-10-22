@@ -6,6 +6,7 @@ import LoginUI from "../views/LoginUI";
 import Login from "../containers/Login.js";
 import { ROUTES } from "../constants/routes";
 import { fireEvent, screen } from "@testing-library/dom";
+import "@testing-library/jest-dom";
 
 describe("Given that I am a user on login page", () => {
   describe("When I do not fill fields and I click on employee button Login In", () => {
@@ -28,7 +29,7 @@ describe("Given that I am a user on login page", () => {
   });
 
   describe("When I do fill fields in incorrect format and I click on employee button Login In", () => {
-    test("Then It should renders Login page", () => {
+    test("Then It should renders Login page and an error message", async () => {
       document.body.innerHTML = LoginUI();
 
       const inputEmailUser = screen.getByTestId("employee-email-input");
@@ -40,13 +41,25 @@ describe("Given that I am a user on login page", () => {
       expect(inputPasswordUser.value).toBe("azerty");
 
       const form = screen.getByTestId("form-employee");
-      const handleSubmit = jest.fn((e) => e.preventDefault());
+      Object.defineProperty(window, "localStorage", {value: {
+          getItem: jest.fn(() => null),
+          setItem: jest.fn(() => null),
+        },
+        writable: true,
+      });
 
-      form.addEventListener("submit", handleSubmit);
+      const store = {login: jest.fn().mockRejectedValue(new Error("Cannot authenticate user")),};
+      new Login({document,localStorage: window.localStorage, onNavigate: jest.fn(), PREVIOUS_LOCATION: "", store,});
+
       fireEvent.submit(form);
-      expect(screen.getByTestId("form-employee")).toBeTruthy();
+      await new Promise(resolve => setTimeout(resolve, 100))
+      const msgErrorEmployee = screen.getByTestId("msg-error-employee")
+      expect(msgErrorEmployee.textContent).toBe("Mot de passe incorrect")
+      
+      const passwordInput = screen.getByTestId("employee-password-input")
+      expect(passwordInput.style.border).toBe("1px solid red")
+      })
     });
-  });
 
   describe("When I do fill fields in correct format and I click on employee button Login In", () => {
     test("Then I should be identified as an Employee in app", () => {
@@ -138,24 +151,35 @@ describe("Given that I am a user on login page", () => {
   });
 
   describe("When I do fill fields in incorrect format and I click on admin button Login In", () => {
-    test("Then it should renders Login page", () => {
+    test("Then it should renders Login page and an error message", async () => {
       document.body.innerHTML = LoginUI();
 
       const inputEmailUser = screen.getByTestId("admin-email-input");
-      fireEvent.change(inputEmailUser, { target: { value: "pasunemail" } });
-      expect(inputEmailUser.value).toBe("pasunemail");
+      fireEvent.change(inputEmailUser, { target: { value: "admin@test.com" } });
 
       const inputPasswordUser = screen.getByTestId("admin-password-input");
-      fireEvent.change(inputPasswordUser, { target: { value: "azerty" } });
-      expect(inputPasswordUser.value).toBe("azerty");
+      fireEvent.change(inputPasswordUser, { target: { value: "wrongpassword" } });
 
       const form = screen.getByTestId("form-admin");
-      const handleSubmit = jest.fn((e) => e.preventDefault());
 
-      form.addEventListener("submit", handleSubmit);
+      Object.defineProperty(window, "localStorage", {value: {
+          getItem: jest.fn(() => null),
+          setItem: jest.fn(() => null),
+        },
+        writable: true,
+      });
+
+      const store = {login: jest.fn().mockRejectedValue(new Error("Cannot authenticate user")),};
+      new Login({document,localStorage: window.localStorage, onNavigate: jest.fn(), PREVIOUS_LOCATION: "", store,});
+
       fireEvent.submit(form);
-      expect(screen.getByTestId("form-admin")).toBeTruthy();
-    });
+      await new Promise(resolve => setTimeout(resolve, 100))
+      const msgErrorAdmin = screen.getByTestId("msg-error-admin")
+      expect(msgErrorAdmin.textContent).toBe("Mot de passe incorrect")
+      
+      const passwordInput = screen.getByTestId("admin-password-input")
+      expect(passwordInput.style.border).toBe("1px solid red")
+    })
   });
 
   describe("When I do fill fields in correct format and I click on admin button Login In", () => {

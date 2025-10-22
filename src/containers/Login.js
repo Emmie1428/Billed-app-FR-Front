@@ -25,16 +25,22 @@ export default class Login {
     }
     this.localStorage.setItem("user", JSON.stringify(user))
     this.login(user)
-      .catch(
-        (err) => this.createUser(user)
-      )
-      .then(() => {
+    .then(() => {
         this.onNavigate(ROUTES_PATH['Bills'])
         this.PREVIOUS_LOCATION = ROUTES_PATH['Bills']
         PREVIOUS_LOCATION = this.PREVIOUS_LOCATION
         this.document.body.style.backgroundColor="#fff"
       })
-
+    .catch(err => {
+      if (err.message === 'Cannot authenticate user') {
+        const passwordInput = e.target.querySelector('input[type="password"]')
+        passwordInput.style.border = '1px solid red'
+        passwordInput.value = ""
+        const msgErrorEmployee = document.querySelector(".msgErrorEmployee")
+        msgErrorEmployee.textContent = "Mot de passe incorrect"
+        return
+      }
+    })
   }
 
   handleSubmitAdmin = e => {
@@ -47,15 +53,23 @@ export default class Login {
     }
     this.localStorage.setItem("user", JSON.stringify(user))
     this.login(user)
-      .catch(
-        (err) => this.createUser(user)
-      )
-      .then(() => {
+    .then(() => {
         this.onNavigate(ROUTES_PATH['Dashboard'])
         this.PREVIOUS_LOCATION = ROUTES_PATH['Dashboard']
         PREVIOUS_LOCATION = this.PREVIOUS_LOCATION
         document.body.style.backgroundColor="#fff"
       })
+      .catch(err => {
+      if (err.message === 'Cannot authenticate user') {
+        const passwordInput = e.target.querySelector('input[type="password"]')
+        passwordInput.style.border = '1px solid red'
+        passwordInput.value = ""
+        const msgErrorAdmin = document.querySelector(".msgErrorAdmin")
+        msgErrorAdmin.textContent = "Mot de passe incorrect"
+        return
+      }
+    })
+      
   }
 
   // not need to cover this function by tests
@@ -74,7 +88,7 @@ export default class Login {
   }
 
   // not need to cover this function by tests
-  createUser = (user) => {
+ /*createUser = (user) => {
     if (this.store) {
       return this.store
       .users()
@@ -91,5 +105,5 @@ export default class Login {
     } else {
       return null
     }
-  }
+  }*/
 }
