@@ -37,7 +37,7 @@ export default class Login {
         passwordInput.style.border = '1px solid red'
         passwordInput.value = ""
         const msgErrorEmployee = document.querySelector(".msgErrorEmployee")
-        msgErrorEmployee.textContent = "Mot de passe incorrect"
+        msgErrorEmployee.textContent = "Identifiant ou mot de passe invalide"
         return
       }
     })
@@ -65,7 +65,7 @@ export default class Login {
         passwordInput.style.border = '1px solid red'
         passwordInput.value = ""
         const msgErrorAdmin = document.querySelector(".msgErrorAdmin")
-        msgErrorAdmin.textContent = "Mot de passe incorrect"
+        msgErrorAdmin.textContent = "Identifiant ou mot de passe invalide"
         return
       }
     })

@@ -54,7 +54,7 @@ describe("Given that I am a user on login page", () => {
       fireEvent.submit(form);
       await new Promise(resolve => setTimeout(resolve, 100))
       const msgErrorEmployee = screen.getByTestId("msg-error-employee")
-      expect(msgErrorEmployee.textContent).toBe("Mot de passe incorrect")
+      expect(msgErrorEmployee.textContent).toBe("Identifiant ou mot de passe invalide")
       
       const passwordInput = screen.getByTestId("employee-password-input")
       expect(passwordInput.style.border).toBe("1px solid red")
@@ -175,7 +175,7 @@ describe("Given that I am a user on login page", () => {
       fireEvent.submit(form);
       await new Promise(resolve => setTimeout(resolve, 100))
       const msgErrorAdmin = screen.getByTestId("msg-error-admin")
-      expect(msgErrorAdmin.textContent).toBe("Mot de passe incorrect")
+      expect(msgErrorAdmin.textContent).toBe("Identifiant ou mot de passe invalide")
       
       const passwordInput = screen.getByTestId("admin-password-input")
       expect(passwordInput.style.border).toBe("1px solid red")
